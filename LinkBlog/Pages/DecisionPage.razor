@@ -1,0 +1,86 @@
+﻿@page "/decision/{Id}"
+@inject LinkService _link
+@inject NavigationManager router
+@inject ApplicationDbContext _db
+
+
+<main class="container main-container">
+    <!-- <h2 class="text-center">Welcome!</h2> -->
+
+    <div>
+        <h6 class="text-center mt-4 mb-4"> select the articles you want to be delivered </h6>
+        
+            @foreach (var item in list)
+            {
+                    <div class="form-group">
+                        @if (!res.Contains(item))
+                        {
+                            <input type="checkbox" name="sun" />
+                            <label class="link"> @item </label>
+                        }
+                        @if (res.Contains(item))
+                        {
+                            <input type="checkbox" name="sun" selected="" />
+                            <label class="link"> @item </label>
+                        }
+                        @if(!res.Contains(item))
+                        {
+                         <button @onclick="@(()=> add(@item))" class="btn btn-outline-primary">Add</button>
+                        }
+                        @if (res.Contains(item))
+                        {
+                            <button @onclick="@(()=> remove(@item))" class="btn btn-outline-danger">clear</button>
+                        }
+                         
+                       
+                    </div>
+            }
+
+        <div class="form-group text-center mt-4">
+            <button class="btn btn-primary m-2" @onclick="@proceed" type="submit">Proceed</button>
+        </div>
+
+    </div>
+</main>
+
+@code{
+    [Parameter]
+    public string Id { get; set; }
+    public List<string> list = new();
+    public List<string> res = new();
+    public LinkResponse Response = new();
+    public string val;
+    public Visitor user = new();
+  
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _db.Visitors.FindAsync(Guid.Parse(Id));
+        list = await _link.GetLinks(res.Url);
+        Response.VisitorId = Guid.Parse(Id);
+
+    }
+
+    async void proceed()
+    {
+        foreach(var i in res)
+        {
+            Response.Response = i;
+            await _db.Response.AddAsync(Response);
+            await _db.SaveChangesAsync();
+        }
+        router.NavigateTo($"/weekdays/{Id}");
+    }
+
+    void add(string s){
+       res.Add(s);
+    }
+
+    void remove(string s)
+    {
+        res.Remove(s);
+
+    }
+}
+

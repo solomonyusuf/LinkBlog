@@ -1,0 +1,27 @@
+
+body{
+    background-color: rgb(212, 212, 212);
+}
+
+.main-container{
+    margin-top: 100px;
+    width: 400px;
+    height: 250px;
+    padding: 30px;
+    padding-bottom: 30px !important;
+    background-color: rgba(233, 237, 243, 0.938);
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0);
+
+}
+.step-3{
+    height: 390px !important;
+}
+.step-4{
+    height: 320px !important;
+}
+.step-6{
+    height: 340px !important;
+}
+
+

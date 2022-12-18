@@ -1,0 +1,44 @@
+﻿@page "/question"
+@using LinkBlog.Services
+@inject LinkService _link
+@inject NavigationManager router
+
+<main class="container main-container step-4">
+    <!-- <h2 class="text-center">Welcome!</h2> -->
+
+    <EditForm Model="user">
+        <h6 class="text-center mt-4 mb-4"> Would you like to see a blog post published after a certain date ?</h6>
+        <hr>
+        <div class="form-group">
+            <select class="form-control" name="no">
+                <option class="text-center">NO</option>
+                <option class="text-center">YES</option>
+            </select>
+        </div>
+
+        <div class="form-group text-center mt-3">
+            <span class="link"> See Posts after: </span><br>
+            <span class="link"> Dec. 5th, 2022 </span>
+        </div>
+
+        <div class="form-group text-center mt-4">
+            <button class="btn btn-primary m-2" @onclick="@(()=> submit())" type="submit">Submit</button>
+        </div>
+
+    </EditForm>
+</main>
+
+@code{
+    [Parameter]
+    public string Id { get; set; }
+    public User user = new();
+    public class User
+    {
+
+    }
+
+    void submit()
+    {
+        router.NavigateTo($"/blog/{Id}");
+    }
+}

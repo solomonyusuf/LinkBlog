@@ -1,11 +1,120 @@
 ﻿@page "/"
-@using LinkBlog.Services
 @inject LinkService _link
+@inject NavigationManager router
+@inject ApplicationDbContext _db
+
+<main class="container main-container">
+    <h2 class="text-center">Welcome Newsletter!</h2>
+
+    <EditForm Model="@user" OnSubmit="@Submit">
+        <h6 class="text-center mt-4">Enter A URL</h6>
+        <div class="form-group">
+            <InputText class="form-control" @bind-Value="@user.Url" placeholder="Paste your URL Here" required />
+        </div>
+
+        <div class="form-group text-center">
+            <button class="btn btn-primary m-2" type="submit">Search</button>
+        </div>
+    </EditForm>
+
+   
+</main>
+<div class="col-md-8">
+   
+        <div class="jumbotron" style="margin-top:10px;">
+            <!-- <h2 class="text-center">Welcome!</h2> -->
+
+            <div>
+                <h6 class="text-center mt-4 mb-4"> select the articles you want to be delivered </h6>
+
+            @if (list.Count() == 0)
+            { 
+                <h5 align="center">No data available</h5>
+            }
+
+            @if (list.Count() != 0)
+            {
+                @foreach (var item in list)
+                {
+                    <div class="form-group">
+                        @if (!res.Contains(item))
+                        {
+                            <input type="checkbox" name="sun" />
+                            <label class="link"> @item </label>
+                        }
+                        @if (res.Contains(item))
+                        {
+                            <input type="checkbox" name="sun" selected="" />
+                            <label class="link"> @item </label>
+                        }
+                        @if (!res.Contains(item))
+                        {
+                            <button @onclick="@(()=> add(@item))" style="margin:3px;" class="btn btn-outline-primary">Add</button>
+                        }
+                        @if (res.Contains(item))
+                        {
+                            <button @onclick="@(()=> remove(@item))" style="margin:3px;" class="btn btn-outline-danger">clear</button>
+                        }
 
 
-<h1>Hello, world!</h1>
-<h5>Path: {domainName}/api/LinkService</h5>
+                    </div>
+
+                }
+            }
+            @if (list.Count() != 0)
+            {
+                <div class="form-group text-center mt-4">
+                    <button class="btn btn-primary m-2" @onclick="@proceed" type="submit">Proceed</button>
+                </div>
+            }
+                </div>
+           
+        </div>
+   
+</div>
+
+
+
 
 @code {
-    
+    public string data;
+    public Visitor user = new();
+    public List<string> list = new();
+    public List<string> res = new();
+    public LinkResponse Response = new();
+    public string val;
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        user.VisitorId = Guid.NewGuid();
+
+    }
+
+    async void proceed()
+    {
+
+        router.NavigateTo($"/weekdays/{user.VisitorId}");
+    }
+
+    void add(string s)
+    {
+        res.Add(s);
+    }
+
+    void remove(string s)
+    {
+        res.Remove(s);
+
+    }
+    async void Submit()
+    {
+        if(user.Url != null){
+            list = await _link.GetLinks(user.Url);
+        }
+
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using LinkBlog.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,9 @@ namespace LinkBlog.Data
             : base(options)
         {
         }
+
+        public DbSet<Visitor> Visitors { get; set; }
+        public DbSet<LinkResponse> Response { get; set; }
+        public DbSet<Weekday> Weekdays { get; set; }
     }
 }

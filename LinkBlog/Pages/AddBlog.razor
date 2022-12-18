@@ -1,0 +1,32 @@
+﻿@page "/blog/{Id}"
+@inject LinkService _link
+@inject NavigationManager router
+@inject ApplicationDbContext _db
+
+<main class="container main-container">
+    <h6 class="text-center">Would you like to add any other blogs to your daily newsletter ?</h6>
+    <hr>
+    <form>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Type in Yes/No">
+        </div>
+
+        <div class="form-group text-center">
+            <button class="btn btn-primary m-2"  @onclick="@(()=> submit())" type="submit">Submit</button>
+        </div>
+        <div class="form-group text-center mt-3">
+            <a href="#"  @onclick="@(()=> submit())"><ins>Skip For Now</ins></a>
+        </div>
+    </form>
+</main>
+
+@code {
+     [Parameter]
+    public string Id { get; set; }
+
+    void submit()
+    {
+        router.NavigateTo("/addfriend");
+    }
+
+}

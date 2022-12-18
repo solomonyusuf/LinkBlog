@@ -1,0 +1,78 @@
+﻿@page "/weekdays"
+@inject LinkService _link
+@inject NavigationManager router
+@inject ApplicationDbContext _db
+
+<main class="container main-container step-3">
+    <!-- <h2 class="text-center">Welcome!</h2> -->
+
+   
+        <h6 class="text-center mt-4 mb-4"> Which days will like to receive Article from this site to your mailbox ?</h6>
+        <hr>
+             @foreach (var item in res)
+            {
+                    <div class="form-group">
+                        @if (!res.Contains(item))
+                        {
+                            <input type="checkbox" name="sun" />
+                            <label class="link"> @item </label>
+                        }
+                        @if (res.Contains(item))
+                        {
+                            <input type="checkbox" name="sun" selected="" />
+                            <label class="link"> @item </label>
+                        }
+                        @if(!res.Contains(item))
+                        {
+                         <button @onclick="@(()=> add(@item))" class="btn btn-outline-primary">Add</button>
+                        }
+                        @if (res.Contains(item))
+                        {
+                            <button @onclick="@(()=> remove(@item))" class="btn btn-outline-danger">clear</button>
+                        }
+                         
+                       
+                    </div>
+            }
+
+        <div class="form-group text-center mt-4">
+            <button class="btn btn-primary m-2" @onclick="@proceed" type="submit">Proceed</button>
+        </div>
+</main>
+
+@code{
+    [Parameter]
+    public string Id { get; set; }
+    public List<string> res = new();
+    public List<string> days = new(){"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    public Weekday weekday = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _db.Visitors.FindAsync(Guid.Parse(Id));
+        weekday.VisitorId = Guid.Parse(Id);
+
+    }
+
+    async void proceed()
+    {
+        foreach(var i in res)
+        {
+            weekday.Day = i;
+            await _db.Weekdays.AddAsync(weekday);
+            await _db.SaveChangesAsync();
+        }
+        router.NavigateTo($"/question/{Id}");
+    }
+
+    void add(string s){
+       res.Add(s);
+    }
+
+    void remove(string s)
+    {
+        res.Remove(s);
+
+    }
+}
