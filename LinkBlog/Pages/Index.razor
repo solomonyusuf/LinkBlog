@@ -37,16 +37,7 @@
                 @foreach (var item in list)
                 {
                     <div class="form-group">
-                        @if (!res.Contains(item))
-                        {
-                            <input type="checkbox" name="sun" />
-                            <label class="link"> @item </label>
-                        }
-                        @if (res.Contains(item))
-                        {
-                            <input type="checkbox" name="sun" selected="" />
-                            <label class="link"> @item </label>
-                        }
+                       <label>@item</label>
                         @if (!res.Contains(item))
                         {
                             <button @onclick="@(()=> add(@item))" style="margin:3px;" class="btn btn-outline-primary">Add</button>
