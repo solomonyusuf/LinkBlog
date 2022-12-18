@@ -1,4 +1,4 @@
-﻿@page "/weekdays"
+﻿@page "/weekdays/{Id}"
 @inject LinkService _link
 @inject NavigationManager router
 @inject ApplicationDbContext _db
@@ -9,7 +9,7 @@
    
         <h6 class="text-center mt-4 mb-4"> Which days will like to receive Article from this site to your mailbox ?</h6>
         <hr>
-             @foreach (var item in res)
+             @foreach (var item in days)
             {
                     <div class="form-group">
                         @if (!res.Contains(item))
@@ -50,7 +50,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var res = await _db.Visitors.FindAsync(Guid.Parse(Id));
+        //var res = await _db.Visitors.FindAsync(Guid.Parse(Id));
         weekday.VisitorId = Guid.Parse(Id);
 
     }
