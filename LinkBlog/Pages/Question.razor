@@ -1,4 +1,4 @@
-﻿@page "/question"
+﻿@page "/question/{Id}"
 @using LinkBlog.Services
 @inject LinkService _link
 @inject NavigationManager router
@@ -6,7 +6,7 @@
 <main class="container main-container step-4">
     <!-- <h2 class="text-center">Welcome!</h2> -->
 
-    <EditForm Model="user">
+    <div>
         <h6 class="text-center mt-4 mb-4"> Would you like to see a blog post published after a certain date ?</h6>
         <hr>
         <div class="form-group">
@@ -18,14 +18,14 @@
 
         <div class="form-group text-center mt-3">
             <span class="link"> See Posts after: </span><br>
-            <span class="link"> Dec. 5th, 2022 </span>
+            <span class="link"> @DateTime.Now.AddDays(10).ToLongDateString() </span>
         </div>
 
         <div class="form-group text-center mt-4">
             <button class="btn btn-primary m-2" @onclick="@(()=> submit())" type="submit">Submit</button>
         </div>
 
-    </EditForm>
+    </div>
 </main>
 
 @code{

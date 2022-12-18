@@ -3,22 +3,25 @@
 @inject NavigationManager router
 @inject ApplicationDbContext _db
 
-<main class="container main-container">
-    <h2 class="text-center">Welcome Newsletter!</h2>
+        @if (list.Count() == 0)
+        {
+            <main class="container main-container">
+            <h2 class="text-center">Welcome Newsletter!</h2>
 
-    <EditForm Model="@user" OnSubmit="@Submit">
-        <h6 class="text-center mt-4">Enter A URL</h6>
-        <div class="form-group">
-            <InputText class="form-control" @bind-Value="@user.Url" placeholder="Paste your URL Here" required />
-        </div>
+            <EditForm Model="@user" OnSubmit="@Submit">
+                <h6 class="text-center mt-4">Enter A URL</h6>
+                <div class="form-group">
+                    <InputText class="form-control" @bind-Value="@user.Url" placeholder="Paste your URL Here" required />
+                </div>
 
-        <div class="form-group text-center">
-            <button class="btn btn-primary m-2" type="submit">Keep clicking to Search</button>
-        </div>
-    </EditForm>
+                <div class="form-group text-center">
+                    <button class="btn btn-primary m-2" type="submit">Keep clicking to Search</button>
+                </div>
+            </EditForm>
 
    
-</main>
+            </main>
+        }   
 <div class="col-md-8">
    
         <div class="jumbotron" style="margin-top:10px;">
